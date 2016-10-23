@@ -82,6 +82,16 @@ func TestAddDefaultHeader(t *testing.T) {
 	}
 }
 
+func TestAddCookie(t *testing.T) {
+	cookie := &http.Cookie{Name: "test-cookie", Value: "test-value"}
+	test := NewTest("unit-test").
+		AddCookie(cookie)
+
+	if test.Cookies[0] != cookie {
+		t.Error("expected cookie to be set")
+	}
+}
+
 func TestPostMustStatus(t *testing.T) {
 	test := NewTest("unit-test")
 
