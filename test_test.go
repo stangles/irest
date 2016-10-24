@@ -203,6 +203,28 @@ func mustNil() error {
 	return fmt.Errorf("must function error")
 }
 
+func TestMustStatusError(t *testing.T) {
+	test := NewTest("unit-test")
+
+	test.Error = fmt.Errorf("testing error")
+	test = test.MustStatus(500)
+
+	if test.Error == nil {
+		t.Errorf("expected an error, but did not get one")
+	}
+}
+
+func TestMustStatusMismatch(t *testing.T) {
+	test := NewTest("unit-test")
+
+	test.Status = 418
+	test = test.MustStatus(451)
+
+	if test.Error == nil {
+		t.Errorf("expected an error, but did not get one")
+	}
+}
+
 func TestMustFunction(t *testing.T) {
 	test := NewTest("unit-test")
 
