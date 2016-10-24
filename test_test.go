@@ -46,6 +46,8 @@ func init() {
 				w.Header().Set("Content-Type", "application/json")
 				w.WriteHeader(http.StatusOK)
 				w.Write(data)
+			} else if r.Method == "DELETE" {
+				w.WriteHeader(http.StatusNoContent)
 			}
 		}))
 }
@@ -81,6 +83,15 @@ func TestPut(t *testing.T) {
 	}
 	if !sample.Success {
 		t.Error("expected response success to be true")
+	}
+}
+
+func TestDelete(t *testing.T) {
+	test := NewTest("unit-test")
+
+	test = test.Delete(api.URL, "/tests")
+	if test.Status != http.StatusNoContent {
+		t.Errorf("expected status 204 No Content, instead was %d", test.Status)
 	}
 }
 
