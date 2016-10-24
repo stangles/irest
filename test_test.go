@@ -225,6 +225,27 @@ func TestMustStatusMismatch(t *testing.T) {
 	}
 }
 
+func TestMustStringValueError(t *testing.T) {
+	test := NewTest("unit-test")
+
+	test.Error = fmt.Errorf("testing error")
+	test = test.MustStringValue("test", "test")
+
+	if test.Error == nil {
+		t.Errorf("expected an error, but did not get one")
+	}
+}
+
+func TestMustStringValueMismatch(t *testing.T) {
+	test := NewTest("unit-test")
+
+	test = test.MustStringValue("foo", "bar")
+
+	if test.Error == nil {
+		t.Errorf("expected an error, but did not get one")
+	}
+}
+
 func TestMustFunction(t *testing.T) {
 	test := NewTest("unit-test")
 
