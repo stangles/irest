@@ -278,6 +278,49 @@ func TestMustError(t *testing.T) {
 	}
 }
 
+func TestSaveCookieError(t *testing.T) {
+	test := NewTest("unit-test")
+
+	test.Error = fmt.Errorf("testing error")
+	test = test.SaveCookie("test-cookie", &http.Cookie{})
+
+	if test.Error == nil {
+		t.Errorf("expected an error, but did not get one")
+	}
+}
+
+func TestSaveCookieNoResponse(t *testing.T) {
+	test := NewTest("unit-test")
+
+	test = test.SaveCookie("test-cookie", &http.Cookie{})
+
+	if test.Error == nil {
+		t.Errorf("expected an error, but did not get one")
+	}
+
+	msg := "http response not set, must have request before saving result"
+	if test.Error.Error() != msg {
+		t.Errorf("expected '%s', got '%s' instead", msg, test.Error.Error())
+	}
+}
+
+func TestSaveCookieDoesNotExist(t *testing.T) {
+	test := NewTest("unit-test")
+
+	cookie := &http.Cookie{}
+	test = test.Post(api.URL, "/tests", nil).
+		SaveCookie("nonexistent-cookie", cookie)
+
+	if test.Error == nil {
+		t.Error("expected an error, but did not get one")
+	}
+
+	msg := "cookie name 'nonexistent-cookie' not found"
+	if test.Error.Error() != msg {
+		t.Errorf("expected '%s', but got '%s' instead", msg, test.Error.Error())
+	}
+}
+
 func TestMustFunction(t *testing.T) {
 	test := NewTest("unit-test")
 
