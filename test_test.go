@@ -104,6 +104,16 @@ func TestMalformedUrl(t *testing.T) {
 	}
 }
 
+func TestBadRequestBody(t *testing.T) {
+	test := NewTest("unit-test")
+
+	// pass a clearly bogus request body to force a json parse error
+	test = test.Post(api.URL, "/tests", make(chan int))
+	if test.Error == nil {
+		t.Errorf("expected an error, but did not get one")
+	}
+}
+
 func TestAddDefaultHeader(t *testing.T) {
 	test := NewTest("unit-test").
 		AddHeader("Content-Type", "application/json")
