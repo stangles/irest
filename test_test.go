@@ -123,6 +123,16 @@ func TestRequestFailure(t *testing.T) {
 	}
 }
 
+func TestParseResponseBodyEmptyResponse(t *testing.T) {
+	test := NewTest("unit-test")
+
+	test = test.ParseResponseBody(nil)
+
+	if test.Error == nil {
+		t.Errorf("expected an error, but did not get one")
+	}
+}
+
 func TestAddDefaultHeader(t *testing.T) {
 	test := NewTest("unit-test").
 		AddHeader("Content-Type", "application/json")
