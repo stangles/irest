@@ -267,6 +267,17 @@ func TestMustIntValueMismatch(t *testing.T) {
 	}
 }
 
+func TestMustError(t *testing.T) {
+	test := NewTest("unit-test")
+
+	test.Error = fmt.Errorf("testing error")
+	test = test.Must(mustNil)
+
+	if test.Error == nil {
+		t.Errorf("expected an error, but did not get one")
+	}
+}
+
 func TestMustFunction(t *testing.T) {
 	test := NewTest("unit-test")
 
