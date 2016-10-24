@@ -20,7 +20,7 @@ type SampleObject struct {
 func init() {
 	api = httptest.NewServer(
 		http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			if r.Method == "POST" {
+			if r.Method == "POST" || r.Method == "PUT" {
 				data, _ := json.Marshal(SampleObject{
 					Name:    "unit-test",
 					Value:   100,
@@ -63,6 +63,19 @@ func TestPost(t *testing.T) {
 
 	sample := SampleObject{}
 	test = test.Post(api.URL, "/tests", nil).ParseResponseBody(&sample)
+	if sample.Name != "unit-test" {
+		t.Errorf("name response was %s, expected unit-test", sample.Name)
+	}
+	if !sample.Success {
+		t.Error("expected response success to be true")
+	}
+}
+
+func TestPut(t *testing.T) {
+	test := NewTest("unit-test")
+
+	sample := SampleObject{}
+	test = test.Put(api.URL, "/tests", nil).ParseResponseBody(&sample)
 	if sample.Name != "unit-test" {
 		t.Errorf("name response was %s, expected unit-test", sample.Name)
 	}
