@@ -130,6 +130,7 @@ func TestAddCookie(t *testing.T) {
 	test := NewTest("unit-test").
 		AddCookie(cookie)
 
+	test = test.Get(api.URL, "/tests")
 	if test.Cookies[0] != cookie {
 		t.Error("expected cookie to be set")
 	}
