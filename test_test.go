@@ -95,6 +95,15 @@ func TestDelete(t *testing.T) {
 	}
 }
 
+func TestMalformedUrl(t *testing.T) {
+	test := NewTest("unit-test")
+
+	test = test.Get(api.URL, "bad-url%@%(*%)///\\####")
+	if test.Error == nil {
+		t.Errorf("expected an error, but did not get one")
+	}
+}
+
 func TestAddDefaultHeader(t *testing.T) {
 	test := NewTest("unit-test").
 		AddHeader("Content-Type", "application/json")
