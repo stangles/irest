@@ -20,7 +20,7 @@ type SampleObject struct {
 func init() {
 	api = httptest.NewServer(
 		http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			if r.Method == "POST" || r.Method == "PUT" {
+			if r.Method == http.MethodPost || r.Method == http.MethodPut {
 				data, _ := json.Marshal(SampleObject{
 					Name:    "unit-test",
 					Value:   100,
@@ -36,7 +36,7 @@ func init() {
 				w.Header().Set("Content-Type", "application/json")
 				w.WriteHeader(http.StatusCreated)
 				w.Write(data)
-			} else if r.Method == "GET" {
+			} else if r.Method == http.MethodGet {
 				data, _ := json.Marshal(SampleObject{
 					Name:    "unit-test",
 					Value:   100,
@@ -46,7 +46,7 @@ func init() {
 				w.Header().Set("Content-Type", "application/json")
 				w.WriteHeader(http.StatusOK)
 				w.Write(data)
-			} else if r.Method == "DELETE" {
+			} else if r.Method == http.MethodDelete {
 				w.WriteHeader(http.StatusNoContent)
 			}
 		}))
